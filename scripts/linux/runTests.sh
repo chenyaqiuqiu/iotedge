@@ -58,6 +58,17 @@ RES=0
 #  fi
 #done < <(find $ROOTFOLDER -type f -iname $SUFFIX)
 
+testProjectDlls = ""
+while read proj; do
+  parentDirectory = $(dirname -- "$proj")
+  fileName = $(basename -- "$proj")
+  fileBaseName = ${filename%.*}
+  
+  testProjectDlls="$testProjectDlls $parentDirectory/bin/Release/netcoreapp2.1/$fileBaseName.dll"
+done < <(find $ROOTFOLDER -type f -iname $SUFFIX)
+
+echo "test project dlls:$testProjectDlls"
+
 dotnet vstest "$BUILD_REPOSITORY_LOCALPATH/edge-agent/test/Microsoft.Azure.Devices.Edge.Agent.Core.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Agent.Core.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-agent/test/Microsoft.Azure.Devices.Edge.Agent.Docker.E2E.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Agent.Docker.E2E.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-agent/test/Microsoft.Azure.Devices.Edge.Agent.Docker.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Agent.Docker.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-agent/test/Microsoft.Azure.Devices.Edge.Agent.Edgelet.Docker.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Agent.Edgelet.Docker.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-agent/test/Microsoft.Azure.Devices.Edge.Agent.Edgelet.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Agent.Edgelet.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-agent/test/Microsoft.Azure.Devices.Edge.Agent.IoTHub.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Agent.IoTHub.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-hub/test/Microsoft.Azure.Devices.Edge.Hub.Amqp.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Hub.Amqp.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-hub/test/Microsoft.Azure.Devices.Edge.Hub.CloudProxy.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Hub.CloudProxy.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-hub/test/Microsoft.Azure.Devices.Edge.Hub.Core.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Hub.Core.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-hub/test/Microsoft.Azure.Devices.Edge.Hub.E2E.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Hub.E2E.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-hub/test/Microsoft.Azure.Devices.Edge.Hub.Http.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Hub.Http.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-hub/test/Microsoft.Azure.Devices.Edge.Hub.Mqtt.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Hub.Mqtt.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-hub/test/Microsoft.Azure.Devices.Edge.Hub.Service.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Hub.Service.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-hub/test/Microsoft.Azure.Devices.Routing.Core.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Routing.Core.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-util/test/Microsoft.Azure.Devices.Edge.Storage.RocksDb.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Storage.RocksDb.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-util/test/Microsoft.Azure.Devices.Edge.Storage.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Storage.Test.dll" "$BUILD_REPOSITORY_LOCALPATH/edge-util/test/Microsoft.Azure.Devices.Edge.Util.Test/bin/Release/netcoreapp2.1/Microsoft.Azure.Devices.Edge.Util.Test.dll" /TestCaseFilter:"Category=Integration&Category!=Stress" /Logger:"trx" /TestAdapterPath:"$BUILD_REPOSITORY_LOCALPATH" /Parallel
 
 if [ $? -gt 0 ]

@@ -62,15 +62,19 @@ else {
 
 Write-Host "Running tests in all test projects with filter '$Filter'."
 
+$testProjectsDlls = ""
 foreach ($Project in (Get-ChildItem $BuildRepositoryLocalPath -Include $TEST_PROJ_PATTERN -Recurse)) {
     #Write-Host "Running tests for $Project."
 	#Write-Host "Run command: '" + $DOTNET_PATH + "' " + $BaseTestCommand " -o " + $BuildBinariesDirectory + " " + $Project
     #Invoke-Expression "&`"$DOTNET_PATH`" $BaseTestCommand -o $BuildBinariesDirectory $Project"
 
     Write-Host "Project Loop: $Project"
+    
+    $fileBaseName = [System.IO.Path]::GetFileNameWithoutExtension($Project)
+    $parentDirectory = Split-Path -Path $Project
+    $testProjectsDlls += " $parentDirectory\bin\Release\netcoreapp2\$fileBaseName.dll"
 }
-
-Write-Host "print path: $BuildRepositoryLocalPath\edge-agent\test\Microsoft.Azure.Devices.Edge.Agent.Core.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Agent.Core.Test.dll"
+Write-Host "Test project dlls:$testProjectsDlls"
 
 dotnet vstest "$BuildRepositoryLocalPath\edge-agent\test\Microsoft.Azure.Devices.Edge.Agent.Core.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Agent.Core.Test.dll" "$BuildRepositoryLocalPath\edge-agent\test\Microsoft.Azure.Devices.Edge.Agent.Docker.E2E.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Agent.Docker.E2E.Test.dll" "$BuildRepositoryLocalPath\edge-agent\test\Microsoft.Azure.Devices.Edge.Agent.Docker.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Agent.Docker.Test.dll" "$BuildRepositoryLocalPath\edge-agent\test\Microsoft.Azure.Devices.Edge.Agent.Edgelet.Docker.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Agent.Edgelet.Docker.Test.dll" "$BuildRepositoryLocalPath\edge-agent\test\Microsoft.Azure.Devices.Edge.Agent.Edgelet.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Agent.Edgelet.Test.dll" "$BuildRepositoryLocalPath\edge-agent\test\Microsoft.Azure.Devices.Edge.Agent.IoTHub.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Agent.IoTHub.Test.dll" "$BuildRepositoryLocalPath\edge-hub\test\Microsoft.Azure.Devices.Edge.Hub.Amqp.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Hub.Amqp.Test.dll" "$BuildRepositoryLocalPath\edge-hub\test\Microsoft.Azure.Devices.Edge.Hub.CloudProxy.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Hub.CloudProxy.Test.dll" "$BuildRepositoryLocalPath\edge-hub\test\Microsoft.Azure.Devices.Edge.Hub.Core.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Hub.Core.Test.dll" "$BuildRepositoryLocalPath\edge-hub\test\Microsoft.Azure.Devices.Edge.Hub.E2E.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Hub.E2E.Test.dll" "$BuildRepositoryLocalPath\edge-hub\test\Microsoft.Azure.Devices.Edge.Hub.Http.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Hub.Http.Test.dll" "$BuildRepositoryLocalPath\edge-hub\test\Microsoft.Azure.Devices.Edge.Hub.Mqtt.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Hub.Mqtt.Test.dll" "$BuildRepositoryLocalPath\edge-hub\test\Microsoft.Azure.Devices.Edge.Hub.Service.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Hub.Service.Test.dll" "$BuildRepositoryLocalPath\edge-hub\test\Microsoft.Azure.Devices.Routing.Core.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Routing.Core.Test.dll" "$BuildRepositoryLocalPath\edge-util\test\Microsoft.Azure.Devices.Edge.Storage.RocksDb.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Storage.RocksDb.Test.dll" "$BuildRepositoryLocalPath\edge-util\test\Microsoft.Azure.Devices.Edge.Storage.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Storage.Test.dll" "$BuildRepositoryLocalPath\edge-util\test\Microsoft.Azure.Devices.Edge.Util.Test\bin\Release\netcoreapp2.1\Microsoft.Azure.Devices.Edge.Util.Test.dll" /TestCaseFilter:"Category=Integration&Category!=Stress" /Logger:"trx" /TestAdapterPath:"$BuildRepositoryLocalPath" /Parallel
 
