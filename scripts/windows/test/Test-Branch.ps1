@@ -70,7 +70,7 @@ foreach ($Project in (Get-ChildItem $BuildRepositoryLocalPath -Include $TEST_PRO
 
     $fileBaseName = [System.IO.Path]::GetFileNameWithoutExtension($Project)
     $parentDirectory = Split-Path -Path $Project
-    $currentTestProjectDll = " $parentDirectory\bin\Release\netcoreapp2\$fileBaseName.dll"
+    $currentTestProjectDll = " $parentDirectory\bin\Release\netcoreapp2.1\$fileBaseName.dll"
     Write-Host "Found test project:$currentTestProjectDll"
     $testProjectsDlls += $currentTestProjectDll
 }
