@@ -60,11 +60,11 @@ RES=0
 
 testProjectDlls = ""
 while read proj; do
-  parentDirectory = "$(dirname -- "$proj")"
-  fileName = "$(basename -- "$proj")"
-  fileBaseName = "${filename%.*}"
+  fileParentDirectory="$(dirname -- "$proj")"
+  fileName="$(basename -- "$proj")"
+  fileBaseName="${fileName%.*}"
   
-  currentTestProjectDll = "$parentDirectory/bin/Release/netcoreapp2.1/$fileBaseName.dll"
+  currentTestProjectDll="$fileParentDirectory/bin/Release/netcoreapp2.1/$fileBaseName.dll"
   echo "Found test project:$currentTestProjectDll"
   testProjectDlls="$testProjectDlls $currentTestProjectDll"
 done < <(find $ROOTFOLDER -type f -iname $SUFFIX)
