@@ -55,13 +55,13 @@ while read proj; do
   testProjectDlls="$testProjectDlls $currentTestProjectDll"
 done < <(find $ROOTFOLDER -type f -iname $SUFFIX)
 
-echo "test project dlls:$testProjectDlls"
-
 if [ -z "$testFilterValue" ]
 then
-      dotnet vstest $testProjectDlls /Logger:"trx" /TestAdapterPath:"$BUILD_REPOSITORY_LOCALPATH" /Parallel
+  echo "Run test command:dotnet vstest $testProjectDlls /Logger:trx /TestAdapterPath:$BUILD_REPOSITORY_LOCALPATH /Parallel"
+  dotnet vstest $testProjectDlls /Logger:"trx" /TestAdapterPath:"$BUILD_REPOSITORY_LOCALPATH" /Parallel
 else
-      dotnet vstest $testProjectDlls /TestCaseFilter:"$testFilterValue" /Logger:"trx" /TestAdapterPath:"$BUILD_REPOSITORY_LOCALPATH" /Parallel
+  echo "Run test command:dotnet vstest $testProjectDlls /TestCaseFilter:$testFilterValue /Logger:trx /TestAdapterPath:$BUILD_REPOSITORY_LOCALPATH /Parallel"
+  dotnet vstest $testProjectDlls /TestCaseFilter:"$testFilterValue" /Logger:"trx" /TestAdapterPath:"$BUILD_REPOSITORY_LOCALPATH" /Parallel
 fi
 
 if [ $? -gt 0 ]

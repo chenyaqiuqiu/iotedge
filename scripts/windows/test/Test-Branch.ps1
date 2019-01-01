@@ -76,6 +76,7 @@ if ($Filter) {
     $vstestCommand += " /TestCaseFilter:`"$Filter`"" 
 }
 
+Write-Host "Run test command:$vstestCommand"
 Invoke-Expression "$vstestCommand"
 Write-Host "Last exit code=$LASTEXITCODE"
 
