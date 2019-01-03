@@ -67,7 +67,7 @@ then
   dotnet vstest $testProjectDlls /Logger:"trx" /TestAdapterPath:"$BUILD_REPOSITORY_LOCALPATH" /Parallel
 else
   echo "Run test command:dotnet vstest $testProjectDlls /TestCaseFilter:$testFilterValue /Logger:trx /TestAdapterPath:$BUILD_REPOSITORY_LOCALPATH /Parallel"
-  dotnet vstest $testProjectDlls /TestCaseFilter:"$testFilterValue" /Logger:"trx;LogFileName=result.trx" /TestAdapterPath:"$BUILD_REPOSITORY_LOCALPATH" /Parallel
+  dotnet vstest $testProjectDlls /TestCaseFilter:"$testFilterValue" /Logger:"trx;LogFileName=result.trx" /TestAdapterPath:"$BUILD_REPOSITORY_LOCALPATH" /Parallel /InIsolation
 fi
 
 if [ $? -gt 0 ]

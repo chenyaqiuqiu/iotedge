@@ -76,7 +76,7 @@ foreach ($Project in (Get-ChildItem $BuildRepositoryLocalPath -Include $TEST_PRO
     $testProjectsDlls += $currentTestProjectDll
 }
 
-$vstestCommand = "$DOTNET_PATH vstest $testProjectsDlls /Logger:`"$LOGGER_ARG`" /TestAdapterPath:`"$BuildRepositoryLocalPath`" /Parallel"
+$vstestCommand = "$DOTNET_PATH vstest $testProjectsDlls /Logger:`"$LOGGER_ARG`" /TestAdapterPath:`"$BuildRepositoryLocalPath`" /Parallel /InIsolation"
 
 if ($Filter) {
     $vstestCommand += " /TestCaseFilter:`"$Filter`"" 
