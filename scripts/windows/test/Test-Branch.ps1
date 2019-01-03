@@ -50,7 +50,7 @@ if (-not (Test-Path $DOTNET_PATH -PathType Leaf)) {
     throw "$DOTNET_PATH not found."
 }
 
-if ([string]::IsNullOrEmpty($BuildConfig)) {
+if (-not $BuildConfig) {
     $BuildConfig = "CheckInBuild"
 }
 
