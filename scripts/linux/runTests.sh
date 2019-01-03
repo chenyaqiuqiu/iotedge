@@ -15,6 +15,7 @@ BUILD_BINARIESDIRECTORY=${BUILD_BINARIESDIRECTORY:-$BUILD_REPOSITORY_LOCALPATH/t
 
 # Process script arguments
 TEST_FILTER="$1"
+BUILD_CONFIG="$2"
 
 SUFFIX='Microsoft.Azure*test.csproj'
 ROOTFOLDER=$BUILD_REPOSITORY_LOCALPATH
@@ -41,6 +42,11 @@ fi
 testFilterValue="${TEST_FILTER#--filter }"
 echo "Running tests in all test projects with filter: $testFilterValue"
 
+if [ -z "$BUILD_CONFIG" ]
+then
+      $BUILD_CONFIG = "CheckInBuild"
+fi
+
 RES=0
 
 # Find all test project dlls
@@ -50,8 +56,8 @@ while read proj; do
   fileName="$(basename -- "$proj")"
   fileBaseName="${fileName%.*}"
   
-  currentTestProjectDll="$fileParentDirectory/bin/Release/netcoreapp2.1/$fileBaseName.dll"
-  echo "Found test project:$currentTestProjectDll"
+  currentTestProjectDll="$fileParentDirectory/bin/$BUILD_CONFIG/netcoreapp2.1/$fileBaseName.dll"
+  echo "Try to run test project:$currentTestProjectDll"
   testProjectDlls="$testProjectDlls $currentTestProjectDll"
 done < <(find $ROOTFOLDER -type f -iname $SUFFIX)
 

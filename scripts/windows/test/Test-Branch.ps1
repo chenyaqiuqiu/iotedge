@@ -16,7 +16,9 @@ param (
     [String] $BuildBinariesDirectory = $Env:BUILD_BINARIESDIRECTORY,
 
     [ValidateNotNullOrEmpty()]
-    [String] $Filter
+    [String] $Filter,
+    
+    [String] $BuildConfig
 )
 
 Set-StrictMode -Version "Latest"
@@ -48,6 +50,10 @@ if (-not (Test-Path $DOTNET_PATH -PathType Leaf)) {
     throw "$DOTNET_PATH not found."
 }
 
+if (-not $BuildConfig) {
+    $BuildConfig = "CheckInBuild"
+}
+
 <#
  # Run tests
  #>
@@ -65,7 +71,7 @@ $testProjectsDlls = ""
 foreach ($Project in (Get-ChildItem $BuildRepositoryLocalPath -Include $TEST_PROJ_PATTERN -Recurse)) {
     $fileBaseName = [System.IO.Path]::GetFileNameWithoutExtension($Project)
     $parentDirectory = Split-Path -Path $Project
-    $currentTestProjectDll = " $parentDirectory\bin\Release\netcoreapp2.1\$fileBaseName.dll"
+    $currentTestProjectDll = " $parentDirectory\bin\$BuildConfig\netcoreapp2.1\$fileBaseName.dll"
     Write-Host "Found test project:$currentTestProjectDll"
     $testProjectsDlls += $currentTestProjectDll
 }
