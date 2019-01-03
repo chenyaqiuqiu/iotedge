@@ -42,8 +42,7 @@ fi
 testFilterValue="${TEST_FILTER#--filter }"
 echo "Running tests in all test projects with filter: $testFilterValue"
 
-if [ -z "$BUILD_CONFIG" ]
-then
+if [ ! -d "$BUILD_CONFIG" ]; then
       $BUILD_CONFIG = "CheckInBuild"
 fi
 
