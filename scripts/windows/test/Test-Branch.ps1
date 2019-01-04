@@ -76,14 +76,15 @@ foreach ($Project in (Get-ChildItem $BuildRepositoryLocalPath -Include $TEST_PRO
     $testProjectsDlls += $currentTestProjectDll
 }
 
-$vstestCommand = "$DOTNET_PATH vstest $testProjectsDlls /Logger:`"$LOGGER_ARG`" /TestAdapterPath:`"$BuildRepositoryLocalPath`" /Parallel /InIsolation"
+$testCommand = "$DOTNET_PATH vstest /Logger:`"$LOGGER_ARG`" /TestAdapterPath:`"$BuildRepositoryLocalPath`" /Parallel /InIsolation"
 
 if ($Filter) {
-    $vstestCommand += " /TestCaseFilter:`"$Filter`"" 
+    $testCommand += " /TestCaseFilter:`"$Filter`"" 
 }
+$testCommand += "$testProjectsDlls"
 
-Write-Host "Run test command:$vstestCommand"
-Invoke-Expression "$vstestCommand"
+Write-Host "Run test command:$testCommand"
+Invoke-Expression "$testCommand"
 Write-Host "Last exit code=$LASTEXITCODE"
 
 Write-Host "Done!"
