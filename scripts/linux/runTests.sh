@@ -61,13 +61,12 @@ while read proj; do
   testProjectDlls="$testProjectDlls $currentTestProjectDll"
 done < <(find $ROOTFOLDER -type f -iname $SUFFIX)
 
-testCommand="dotnet vstest /Logger:"trx;LogFileName=result.trx" /TestAdapterPath:"$BUILD_REPOSITORY_LOCALPATH" /Parallel /InIsolation"
+testCommand="dotnet vstest /Logger:\"trx;LogFileName=result.trx\" /TestAdapterPath:\"$BUILD_REPOSITORY_LOCALPATH\" /Parallel /InIsolation"
 if [ ! -z "$testFilterValue" ]
 then
   testCommand+=" /TestCaseFilter:"$testFilterValue""
 fi
 testCommand+="$testProjectDlls"
-
 
 echo "Run test command:$testCommand"
 $testCommand
